@@ -2,10 +2,15 @@
 ### I.A. 
 RICARDO Prompt Engineering 
 To obtain the necessary information, the following prompt framework was used:
+
 R (Role): You work for the Paris Saint-Germain administration.
+
 C (Context): We are designing "FanConnect," a social platform for supporters and pro players.
+
 A (Additional Constraints): Provide business rules and a dictionary of exactly 30 data items.
+
 R (References): Inspired by Instagram (social) and Transfermarkt (stats).
+
 D (Desired Output): A bulleted list of rules and a raw data table.
 ### I.B. 
 Business Rules 
