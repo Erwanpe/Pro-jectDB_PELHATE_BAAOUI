@@ -14,10 +14,15 @@ R (References): Inspired by Instagram (social) and Transfermarkt (stats).
 D (Desired Output): A bulleted list of rules and a raw data table.
 ### I.B. 
 Business Rules 
+
 •	Users: Each user has a unique profile; a user can follow other users (recursive relationship).
+
 •	Posts: Users publish content (photos/videos); a post belongs to only one author.
+
 •	Engagement: Users can like posts (recording the timestamp) or write comments.
+
 •	Player Performance: For pro players, we track Match Stats (goals, assists, rating) linked directly to their profile.
+
 •	Organization: Posts are tagged with Hashtags for indexing and search.
 ### I.C. 
 Data Dictionary (30 Items) 
