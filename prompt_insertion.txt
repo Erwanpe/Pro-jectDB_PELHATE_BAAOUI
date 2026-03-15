@@ -1,0 +1,152 @@
+Provide the insertion queries used to populate the database, whose relational model is as follows:
+-- 1_creation.sql
+-- Drop tables if they already exist to ensure a clean creation
+DROP TABLE IF EXISTS "Tag" CASCADE;
+DROP TABLE IF EXISTS "Like_" CASCADE;
+DROP TABLE IF EXISTS "Follow" CASCADE;
+DROP TABLE IF EXISTS "Stats_Match" CASCADE;
+DROP TABLE IF EXISTS "Hashtag" CASCADE;
+DROP TABLE IF EXISTS "Comment" CASCADE;
+DROP TABLE IF EXISTS "Post" CASCADE;
+DROP TABLE IF EXISTS "User_" CASCADE;
+
+-- 1. Table User_
+CREATE TABLE "User_" (
+    username VARCHAR(50) PRIMARY KEY,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(128) NOT NULL,
+    bio VARCHAR(255),
+    photo_url VARCHAR(200),
+    registration_date DATE NOT NULL,
+    is_pro_player BOOLEAN NOT NULL DEFAULT FALSE,
+    full_name VARCHAR(80),
+    phone VARCHAR(15),
+    country VARCHAR(30),
+    city VARCHAR(50),
+    is_private BOOLEAN NOT NULL DEFAULT FALSE
+);
+
+-- 2. Table Post
+CREATE TABLE "Post" (
+    post_id_ SERIAL PRIMARY KEY,
+    caption VARCHAR(500),
+    media_url VARCHAR(200),
+    publication_date DATE NOT NULL,
+    device_type VARCHAR(20),
+    username VARCHAR(50) NOT NULL,
+    FOREIGN KEY (username) REFERENCES "User_"(username) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- 3. Table Comment
+CREATE TABLE "Comment" (
+    comment_id SERIAL PRIMARY KEY,
+    content VARCHAR(300) NOT NULL,
+    date_com DATE NOT NULL,
+    time_com TIME NOT NULL,
+    post_id_ INT NOT NULL,
+    username VARCHAR(50) NOT NULL,
+    FOREIGN KEY (post_id_) REFERENCES "Post"(post_id_) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (username) REFERENCES "User_"(username) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- 4. Table Hashtag
+CREATE TABLE "Hashtag" (
+    label VARCHAR(50) PRIMARY KEY
+);
+
+-- 5. Table Stats_Match
+CREATE TABLE "Stats_Match" (
+    username VARCHAR(50),
+    match_id_ SERIAL,
+    opponent VARCHAR(50) NOT NULL,
+    goals INT DEFAULT 0,
+    assists INT DEFAULT 0,
+    km_traveled NUMERIC(5, 2),
+    rating NUMERIC(3, 1),
+    match_date DATE,
+    PRIMARY KEY (username, match_id_),
+    FOREIGN KEY (username) REFERENCES "User_"(username) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- 6. Table Follow
+CREATE TABLE "Follow" (
+    username VARCHAR(50),
+    username_1 VARCHAR(50),
+    date_follow DATE NOT NULL,
+    PRIMARY KEY (username, username_1),
+    FOREIGN KEY (username) REFERENCES "User_"(username) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (username_1) REFERENCES "User_"(username) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- 7. Table Like_
+CREATE TABLE "Like_" (
+    username VARCHAR(50),
+    post_id_ INT,
+    date_like DATE NOT NULL,
+    PRIMARY KEY (username, post_id_),
+    FOREIGN KEY (username) REFERENCES "User_"(username) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (post_id_) REFERENCES "Post"(post_id_) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- 8. Table Tag
+CREATE TABLE "Tag" (
+    post_id_ INT,
+    label VARCHAR(50),
+    PRIMARY KEY (post_id_, label),
+    FOREIGN KEY (post_id_) REFERENCES "Post"(post_id_) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (label) REFERENCES "Hashtag"(label) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+Primary keys correspond to IDs, unless otherwise specified (when it is a composite attribute). Foreign keys are identified by references to the parent tables.
+
+There must be: 
+- 15 rows for the "User_" table. Some of them must be actual current PSG pro players (is_pro_player = TRUE) from the 2024-2025 season like 'dembele', 'marquinhos', 'barcola', 'neves'. Do NOT include former players like 'mbappe' or 'neymar'. The others must be normal fans with diverse origins and mixed first and last names.
+- 10 rows for the "Post" table, written by different users.
+- 15 rows for the "Comment" table on these posts.
+- 10 rows for the "Hashtag" table (e.g., 'PSG', 'IcicestParis', 'Champion').
+- 15 rows for the "Follow" table representing fans following players or each other. Make sure pro players have followers.
+- 15 rows for the "Like_" table.
+- 15 rows for the "Tag" table linking posts to hashtags.
+- 10 rows in the "Stats_Match" table applied exclusively to the pro players.
+ 
+Foreign keys must refer to existing primary keys: provide the lines starting with filling in the tables in which there are no foreign keys, then the tables in which the foreign keys refer to primary keys in tables that have already been filled in. 
+
+The data must comply with the following validation constraints:
+-- 2_contraintes.sql
+-- Validation constraints for the FanConnect Database
+
+-- 1. Email format validation
+ALTER TABLE "User_"
+ADD CONSTRAINT chk_email_format CHECK (email LIKE '%_@__%.__%');
+
+-- 2. Password length constraint
+ALTER TABLE "User_"
+ADD CONSTRAINT chk_password_length CHECK (LENGTH(password) >= 8);
+
+-- 3. Match Statistics logic
+ALTER TABLE "Stats_Match"
+ADD CONSTRAINT chk_goals_positive CHECK (goals >= 0),
+ADD CONSTRAINT chk_assists_positive CHECK (assists >= 0),
+ADD CONSTRAINT chk_km_positive CHECK (km_traveled >= 0),
+ADD CONSTRAINT chk_match_rating_range CHECK (rating >= 0 AND rating <= 10.0);
+
+-- 4. Follower and Followee cannot be the same person
+ALTER TABLE "Follow"
+ADD CONSTRAINT chk_not_self_follow CHECK (username <> username_1);
+
+-- 5. Hashtag format
+ALTER TABLE "Hashtag"
+ADD CONSTRAINT chk_no_spaces_in_hashtag CHECK (label NOT LIKE '% %');
+
+-- 6. Comment Content Validation
+ALTER TABLE "Comment"
+ADD CONSTRAINT chk_comment_not_empty CHECK (LENGTH(TRIM(content)) > 0);
+
+-- 7. Device Type Validation
+ALTER TABLE "Post"
+ADD CONSTRAINT chk_device_type CHECK (device_type IN ('iOS', 'Android', 'Web', 'Other', NULL));
+
+
+Make sure that the normal users' first and last names refer to various origins and are mixed. 
+
+Provide the set in the form of an SQL script ready to be executed.
