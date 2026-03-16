@@ -16,23 +16,14 @@ ADD CONSTRAINT chk_assists_positive CHECK (assists >= 0),
 ADD CONSTRAINT chk_km_positive CHECK (km_traveled >= 0),
 ADD CONSTRAINT chk_match_rating_range CHECK (rating >= 0 AND rating <= 10.0);
 
--- 4. Follower and Followee cannot be the same person
--- NOTE: In MySQL, columns used in a FOREIGN KEY with ON DELETE/UPDATE CASCADE 
--- cannot be part of a CHECK constraint. This is commented out for MySQL compatibility.
--- ALTER TABLE `Follow`
--- ADD CONSTRAINT chk_not_self_follow CHECK (username <> username_1);
-
--- 5. Hashtag format (starts with '#')
--- In our schema, we can assume hashtag labels either include the '#' or not.
--- Let's ensure they are alphanumeric if we don't store '#' physically,
--- or we can just ensure they don't have spaces.
+-- 4. Hashtag format (starts with '#')
 ALTER TABLE `Hashtag`
 ADD CONSTRAINT chk_no_spaces_in_hashtag CHECK (label NOT LIKE '% %');
 
--- 6. Comment Content Validation
+-- 5. Comment Content Validation
 ALTER TABLE `Comment`
 ADD CONSTRAINT chk_comment_not_empty CHECK (LENGTH(TRIM(content)) > 0);
 
--- 7. Device Type Validation
+-- 6. Device Type Validation
 ALTER TABLE `Post`
 ADD CONSTRAINT chk_device_type CHECK (device_type IN ('iOS', 'Android', 'Web', 'Other', NULL));
