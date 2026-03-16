@@ -2,7 +2,7 @@
 -- Mock Data Insertion based on the AI Prompt
 
 -- 1. Insert User_
-INSERT INTO "User_" (username, email, password, bio, photo_url, registration_date, is_pro_player, full_name, phone, country, city, is_private) VALUES
+INSERT INTO `User_` (username, email, password, bio, photo_url, registration_date, is_pro_player, full_name, phone, country, city, is_private) VALUES
 ('dembele', 'ousmane@psg.fr', 'ousmane_d10', 'Dribbler', 'http://url/dembele.jpg', '2023-01-10', TRUE, 'Ousmane Dembele', '+33600000001', 'France', 'Paris', FALSE),
 ('marquinhos', 'marqui@psg.fr', 'marqui1234', 'Captain', 'http://url/marq.jpg', '2023-01-12', TRUE, 'Marquinhos', '+33600000002', 'Brazil', 'Paris', FALSE),
 ('hakimi', 'a.hakimi@psg.fr', 'pass_ah02', 'Speed is key', 'http://url/ah.jpg', '2023-02-15', TRUE, 'Achraf Hakimi', '+33600000003', 'Morocco', 'Paris', FALSE),
@@ -20,7 +20,7 @@ INSERT INTO "User_" (username, email, password, bio, photo_url, registration_dat
 ('casual_watcher', 'casual@mail.com', 'watchingdbz', 'I like goals', NULL, '2024-03-01', FALSE, 'Leo', NULL, 'France', 'Bordeaux', FALSE);
 
 -- 2. Insert Follow Relationships
-INSERT INTO "Follow" (username, username_1, date_follow) VALUES
+INSERT INTO `Follow` (username, username_1, date_follow) VALUES
 ('fan123', 'dembele', '2023-08-11'),
 ('fan123', 'marquinhos', '2023-08-11'),
 ('ultra_psg', 'dembele', '2023-08-16'),
@@ -38,8 +38,9 @@ INSERT INTO "Follow" (username, username_1, date_follow) VALUES
 ('hakimi', 'dembele', '2023-02-16');
 
 -- 3. Insert Posts
-INSERT INTO "Post" (caption, media_url, publication_date, device_type, username) VALUES
+INSERT INTO `Post` (caption, media_url, publication_date, device_type, username) VALUES
 ('Great win tonight! Merci Paris', 'http://url/post1.jpg', '2023-10-01', 'iOS', 'dembele'),
+('Great win tonight!', 'http://url/post2.jpg', '2023-11-01', 'iOS', 'dembele'),
 ('Focused on the next match', 'http://url/post2.jpg', '2023-10-05', 'iOS', 'marquinhos'),
 ('Training hard!', 'http://url/post3.jpg', '2023-10-10', 'Android', 'hakimi'),
 ('Clean sheet! Bravo les gars', 'http://url/post4.jpg', '2023-10-15', 'iOS', 'neves'),
@@ -51,7 +52,7 @@ INSERT INTO "Post" (caption, media_url, publication_date, device_type, username)
 ('Match day! Let go', 'http://url/post10.jpg', '2024-02-15', 'iOS', 'sarah99');
 
 -- 4. Insert Like_
-INSERT INTO "Like_" (username, post_id_, date_like) VALUES
+INSERT INTO `Like_` (username, post_id_, date_like) VALUES
 ('fan123', 1, '2023-10-02'),
 ('ultra_psg', 1, '2023-10-02'),
 ('sarah99', 1, '2023-10-03'),
@@ -69,7 +70,7 @@ INSERT INTO "Like_" (username, post_id_, date_like) VALUES
 ('dembele', 9, '2024-01-21');
 
 -- 5. Insert Comments
-INSERT INTO "Comment" (content, date_com, time_com, username, post_id_) VALUES
+INSERT INTO `Comment` (content, date_com, time_com, username, post_id_) VALUES
 ('What a goal Ousmane!', '2023-10-02', '10:00:00', 'fan123', 1),
 ('Always the best!', '2023-10-02', '11:30:00', 'ultra_psg', 1),
 ('Vamos El Capitan', '2023-10-06', '09:15:00', 'barcola_fan', 2),
@@ -87,7 +88,7 @@ INSERT INTO "Comment" (content, date_com, time_com, username, post_id_) VALUES
 ('Allez Paris!', '2024-02-15', '09:10:00', 'ultra_psg', 10);
 
 -- 6. Insert Hashtags
-INSERT INTO "Hashtag" (label) VALUES
+INSERT INTO `Hashtag` (label) VALUES
 ('Paris'),
 ('IcicestParis'),
 ('Champion'),
@@ -100,7 +101,7 @@ INSERT INTO "Hashtag" (label) VALUES
 ('Titi');
 
 -- 7. Insert Tag
-INSERT INTO "Tag" (post_id_, label) VALUES
+INSERT INTO `Tag` (post_id_, label) VALUES
 (1, 'PSG'),
 (1, 'IcicestParis'),
 (2, 'Champion'),
@@ -118,7 +119,7 @@ INSERT INTO "Tag" (post_id_, label) VALUES
 (10, 'MatchDay');
 
 -- 8. Insert Stats_Match (For Pro Players only)
-INSERT INTO "Stats_Match" (username, opponent, goals, assists, km_traveled, rating, match_date) VALUES
+INSERT INTO `Stats_Match` (username, opponent, goals, assists, km_traveled, rating, match_date) VALUES
 ('dembele', 'Marseille', 2, 0, 9.5, 9.0, '2023-10-01'),
 ('dembele', 'Lyon', 1, 1, 10.1, 8.5, '2023-11-05'),
 ('marquinhos', 'Marseille', 0, 0, 11.2, 8.0, '2023-10-01'),
